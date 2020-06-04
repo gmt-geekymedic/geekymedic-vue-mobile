@@ -1,0 +1,16 @@
+.animated {
+  &.rise-up {
+    animation-name: rise-up;
+  }
+}
+@keyframes rise-up {
+  0% {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
