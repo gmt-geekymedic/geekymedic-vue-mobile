@@ -33,8 +33,8 @@ Object.keys(directives).forEach(key => {
   Vue.directive(key, (directives as { [key: string]: DirectiveOptions })[key]);
 });
 
-if (process.env.NODE_ENV !== "production") {
-  const vconsole = new vConsole();
+if (process.env.NODE_ENV !== "production" || process.env.VUE_APP_VCONSOLE) {
+  new vConsole();
 }
 Vue.config.productionTip = false;
 
