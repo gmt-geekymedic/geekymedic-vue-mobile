@@ -1,5 +1,7 @@
 import { Rxios } from "./Rxios";
 import { Toast } from "vant";
+import { getTrace, getSequence, getTime } from "./util";
+import router from "../router";
 
 // axios全局设置
 const http = new Rxios({
@@ -17,9 +19,9 @@ const http = new Rxios({
 function sendError(error: any) {
   let msg = "发生错误";
   if (error.data) {
-    msg = error.data.message;
-  } else if (error.response) {
-    msg = error.response.message;
+    msg = error.data.Message;
+  } else if (error.response.data) {
+    msg = error.response.data.message;
   } else {
     msg = error.message;
   }
@@ -30,11 +32,47 @@ function sendError(error: any) {
 // axios请求拦截
 http.interceptors.request.use(
   config => {
-    // 若是有做鉴权token , 就给头部带上token
-    // let token = window.sessionStorage.getItem(__TOKEN_KEY__)
-    // if (token) {
-    //   config.headers.Authorization = `Bearer ${token}`
-    // }
+    const loading = (config as any).showLoading;
+    if (loading) {
+      Toast.loading({
+        message: "拼命加载中...",
+        forbidClick: true,
+        duration: 0
+      });
+    }
+    if (!config.url?.endsWith("login")) {
+      config.params = {
+        ...config.params,
+        _platform: "MobileWeb",
+        _version: "1.0.0",
+        _net: "",
+        _os: "",
+        _device: "",
+        _describe: "",
+        _trace: getTrace(),
+        _sequence: getSequence(),
+        _time: getTime()
+      };
+      const token = localStorage.getItem("token");
+      if (token) {
+        config.params._token = token;
+      }
+      const uid = localStorage.getItem("uid");
+      if (uid) {
+        config.params._uid = uid;
+      }
+    }
+    if (config.params) {
+      const params = Object.keys(config.params)
+        .reduce((prev: string[], item) => {
+          prev.push(`${item}=${config.params[item]}`);
+          return prev;
+        }, [])
+        .join("&");
+      config.url = config.url?.includes("?")
+        ? `${config.url}&${params}`
+        : `${config.url}?${params}`;
+    }
     return config;
   },
   error => {
@@ -45,25 +83,24 @@ http.interceptors.request.use(
 
 // axios 响应拦截，对响应的状态处理
 http.interceptors.response.use(
-  //   function (response) {
-  //     console.log(response.data.data) // 响应成功
-  //     return response
-  //   },
-  //   function (error) {
-  //     // console.log(error); //响应失败
-  //     return Promise.reject(error)
-  //   })
   response => {
+    Toast.clear();
     const res = response.data;
-    if (res.Code !== 0) {
-      sendError(new Error(res.Message));
+    if (res.hasOwnProperty("Code")) {
       if (res.Code === 1005) {
-        // this.injector.get(Router).navigateByUrl('/login');
+        const url = location.pathname + location.search;
+        const redirectUrl = encodeURIComponent(url);
+        router.push("/passport/login?redirect=" + redirectUrl);
+      } else if (res.Code !== 0) {
+        // 100003:自提人不存在 （不提示）
+        if (res.Code !== 100003) {
+          sendError(response);
+        }
+        return Promise.reject(res);
       }
-      return Promise.reject(res);
-    } else {
-      return res.Data;
+      response.data = res.Data;
     }
+    return response;
   },
   error => {
     sendError(error);

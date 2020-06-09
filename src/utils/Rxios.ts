@@ -2,7 +2,7 @@ import axios, {
   AxiosRequestConfig,
   AxiosResponse,
   AxiosInstance,
-  AxiosInterceptorManager,
+  AxiosInterceptorManager
 } from "axios";
 import { Observable, defer } from "rxjs";
 
@@ -16,7 +16,7 @@ export class Rxios {
     response: AxiosInterceptorManager<AxiosResponse>;
   } = axios.interceptors;
   private axiosInstance: AxiosInstance;
-  constructor(config?: AxiosRequestConfig | undefined) {
+  constructor(config?: AxiosRequestConfig | any) {
     this.axiosInstance = axios.create(config);
   }
 
@@ -28,49 +28,44 @@ export class Rxios {
     return this.axiosInstance.interceptors;
   }
   request<T>(config: AxiosRequestConfig): Observable<T> {
-    return defer(() => this.axiosInstance.request(config).then((l) => l.data));
+    return defer(() => this.axiosInstance.request(config).then(l => l.data));
   }
-  get<T>(url: string, config?: AxiosRequestConfig | undefined): Observable<T> {
-    return defer(() => this.axiosInstance.get(url, config).then((l) => l.data));
+  get<T>(url: string, config?: AxiosRequestConfig | any): Observable<T> {
+    return defer(() => this.axiosInstance.get(url, config).then(l => l.data));
   }
-  delete<T>(
-    url: string,
-    config?: AxiosRequestConfig | undefined
-  ): Observable<T> {
+  delete<T>(url: string, config?: AxiosRequestConfig | any): Observable<T> {
     return defer(() =>
-      this.axiosInstance.delete(url, config).then((l) => l.data)
+      this.axiosInstance.delete(url, config).then(l => l.data)
     );
   }
-  head<T>(url: string, config?: AxiosRequestConfig | undefined): Observable<T> {
-    return defer(() =>
-      this.axiosInstance.head(url, config).then((l) => l.data)
-    );
+  head<T>(url: string, config?: AxiosRequestConfig | any): Observable<T> {
+    return defer(() => this.axiosInstance.head(url, config).then(l => l.data));
   }
   post<T>(
     url: string,
     data?: any,
-    config?: AxiosRequestConfig | undefined
+    config?: AxiosRequestConfig | any
   ): Observable<T> {
     return defer(() =>
-      this.axiosInstance.post(url, data, config).then((l) => l.data)
+      this.axiosInstance.post(url, data, config).then(l => l.data)
     );
   }
   put<T>(
     url: string,
     data?: any,
-    config?: AxiosRequestConfig | undefined
+    config?: AxiosRequestConfig | any
   ): Observable<T> {
     return defer(() =>
-      this.axiosInstance.put(url, data, config).then((l) => l.data)
+      this.axiosInstance.put(url, data, config).then(l => l.data)
     );
   }
   patch<T>(
     url: string,
     data?: any,
-    config?: AxiosRequestConfig | undefined
+    config?: AxiosRequestConfig | any
   ): Observable<T> {
     return defer(() =>
-      this.axiosInstance.patch(url, data, config).then((l) => l.data)
+      this.axiosInstance.patch(url, data, config).then(l => l.data)
     );
   }
 }
