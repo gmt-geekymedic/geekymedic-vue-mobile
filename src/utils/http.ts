@@ -90,7 +90,7 @@ http.interceptors.response.use(
       if (res.Code === 1005) {
         const url = location.pathname + location.search;
         const redirectUrl = encodeURIComponent(url);
-        router.push("/passport/login?redirect=" + redirectUrl);
+        router.push("/login?redirect=" + redirectUrl);
       } else if (res.Code !== 0) {
         // 100003:自提人不存在 （不提示）
         if (res.Code !== 100003) {

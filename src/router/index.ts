@@ -35,12 +35,12 @@ Vue.use(Router);
   all roles can be accessed
 */
 export const constantRoutes: RouteConfig[] = [
-  // {
-  //   path: "/login",
-  //   component: () =>
-  //     import(/* webpackChunkName: "login" */ "@/views/login/index.vue"),
-  //   meta: { title: "登录", hidden: true }
-  // },
+  {
+    path: "/login",
+    component: () =>
+      import(/* webpackChunkName: "login" */ "@/views/login/index.vue"),
+    meta: { title: "登录", hidden: true }
+  },
   {
     path: "/",
     component: Layout,
