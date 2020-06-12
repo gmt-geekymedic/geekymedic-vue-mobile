@@ -3,20 +3,16 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
+const getters = {
+  headerVisible: state => state.app.headerVisible
+};
 export default new Vuex.Store({
   state: {
     ossUrl:
-      "https://geeky-test-oss-1.oss-cn-shenzhen.aliyuncs.com/officewebsiteh5",
-    headerVisible: true
+      "https://geeky-test-oss-1.oss-cn-shenzhen.aliyuncs.com/officewebsiteh5"
   },
-  mutations: {
-    showHeader(state) {
-      state.headerVisible = true;
-    },
-    hideHeader(state) {
-      state.headerVisible = false;
-    }
-  },
+  getters,
+  mutations: {},
   actions: {},
   modules: {}
 });

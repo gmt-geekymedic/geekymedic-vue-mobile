@@ -62,10 +62,42 @@ export const constantRoutes: RouteConfig[] = [
   //   meta: { hidden: true }
   // },
   {
-    path: "**",
+    path: "*",
     component: () =>
       import(/* webpackChunkName: "404" */ "@/views/error-page/404.vue"),
     meta: { title: "404", hidden: true }
+  }
+];
+
+/**
+ * asyncRoutes
+ * the routes that need to be dynamically loaded based on user roles
+ */
+export const asyncRoutes: RouteConfig[] = [
+  {
+    path: "/permission",
+    component: Layout,
+    redirect: "/permission/test",
+    meta: {
+      title: "权限",
+      icon: "lock",
+      roles: ["admin", "editor"], // you can set roles in root nav
+      alwaysShow: true // will always show the root menu
+    },
+    children: [
+      {
+        path: "test",
+        component: () =>
+          import(
+            /* webpackChunkName: "permission" */ "@/views/permission/test.vue"
+          ),
+        name: "TestPermission",
+        meta: {
+          title: "权限测试页",
+          roles: ["admin"] // or you can only set roles in sub nav
+        }
+      }
+    ]
   }
 ];
 

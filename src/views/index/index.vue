@@ -2,6 +2,7 @@
   <div class="home">
     <img alt="Vue logo" src="../../assets/logo.png" />
     <HelloWorld msg="Welcome to Your Vue.js App" />
+    <van-button type="primary" to="permission">权限测试</van-button>
   </div>
 </template>
 

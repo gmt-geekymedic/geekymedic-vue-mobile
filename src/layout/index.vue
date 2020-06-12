@@ -1,5 +1,5 @@
 <template>
-  <div class="app-wrapper" :class="{'no-header':!headerVisible}">
+  <div class="app-wrapper" :class="{ 'no-header': !headerVisible }">
     <layout-header v-if="headerVisible" />
     <router-view />
     <layout-footer />
@@ -16,7 +16,7 @@ import { LayoutHeader, LayoutFooter } from "./components";
 })
 export default class extends Vue {
   get headerVisible() {
-    return this.$store.state.headerVisible;
+    return this.$store.getters.headerVisible;
   }
 }
 </script>

@@ -1,8 +1,8 @@
 <template>
   <div class="login-container">
     <div class="banner">
-      <van-image width="100%" :src="$store.state.ossUrl+'/login-bg.png'" />
-      <van-image class="tui" :src="$store.state.ossUrl+'/login-tui.png'" />
+      <van-image width="100%" :src="$store.state.ossUrl + '/login-bg.png'" />
+      <van-image class="tui" :src="$store.state.ossUrl + '/login-tui.png'" />
     </div>
     <van-form class="login-form" label-width="0" @submit="onSubmit">
       <van-field
@@ -10,7 +10,14 @@
         type="digit"
         maxlength="11"
         placeholder="手机号"
-        :rules="[{ required: true, message: '请输入手机号' },{pattern: /^1\d{10}$/, message: '手机号码格式不正确',trigger: 'onBlur'}]"
+        :rules="[
+          { required: true, message: '请输入手机号' },
+          {
+            pattern: /^1\d{10}$/,
+            message: '手机号码格式不正确',
+            trigger: 'onBlur'
+          }
+        ]"
       />
       <van-field
         v-model="vcode"
@@ -20,17 +27,27 @@
         :rules="[{ required: true, message: '请输入验证码' }]"
       >
         <template #button>
-          <van-button class="btn-sendCode" size="small" native-type="button" @click="sendCode">发送验证码</van-button>
+          <van-button
+            class="btn-sendCode"
+            size="small"
+            native-type="button"
+            @click="sendCode"
+            >发送验证码</van-button
+          >
         </template>
       </van-field>
       <van-button class="btn-submit" block round type="info">登录</van-button>
       <van-checkbox class="checkbox-agree" v-model="checked">
         登录即代表您已同意
         <a @click.stop="protocolClick('modal1')">《药极推服务协议》</a> 和
-        <a @click.stop="protocolClick('modal1')">《药极推隐私协议》</a>
+        <a @click.stop="protocolClick('modal2')">《药极推隐私协议》</a>
       </van-checkbox>
     </van-form>
-    <van-dialog v-model="modalState.modal1" :show-confirm-button="false" close-on-click-overlay>
+    <van-dialog
+      v-model="modalState.modal1"
+      :show-confirm-button="false"
+      close-on-click-overlay
+    >
       <div :style="{ height: '80vh' }">
         <iframe
           src="https://www.geekymedic.cn/assets/yjt/service-agreement.html"
@@ -40,7 +57,11 @@
         ></iframe>
       </div>
     </van-dialog>
-    <van-dialog v-model="modalState.modal2" :show-confirm-button="false" close-on-click-overlay>
+    <van-dialog
+      v-model="modalState.modal2"
+      :show-confirm-button="false"
+      close-on-click-overlay
+    >
       <div :style="{ height: '80vh' }">
         <iframe
           src="https://www.geekymedic.cn/assets/yjt/service-agreement.html"
@@ -54,8 +75,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import { Form, Field, Checkbox } from "vant";
+import { userModule } from "@/store/modules";
+import { Route } from "vue-router";
 
 @Component({
   name: "Login",
@@ -73,6 +96,16 @@ export default class extends Vue {
     modal1: false,
     modal2: false
   };
+  private redirect = "";
+  @Watch("$route", { immediate: true })
+  private onRouteChange(route: Route) {
+    // TODO: remove the "as Dictionary<string>" hack after v4 release for vue-router
+    // See https://github.com/vuejs/vue-router/pull/2050 for details
+    const query = route.query;
+    if (query) {
+      this.redirect = decodeURIComponent(query.redirect as string);
+    }
+  }
   created() {}
   sendCode() {
     if (!/^1\d{10}$/.test(this.tel)) {
@@ -80,7 +113,10 @@ export default class extends Vue {
       return;
     }
   }
-  onSubmit() {}
+  onSubmit() {
+    userModule.login({ username: this.tel, password: this.vcode });
+    this.$router.push(this.redirect || "/");
+  }
   protocolClick(key: string) {
     this.modalState[key] = true;
   }

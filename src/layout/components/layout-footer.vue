@@ -16,27 +16,43 @@
       </van-collapse-item>
       <van-collapse-item title="联系我们">
         <van-cell-group :border="false">
-          <van-cell title="电话：0755-26412925" url="tel:0755-26412925" :border="false" />
+          <van-cell
+            title="电话：0755-26412925"
+            url="tel:0755-26412925"
+            :border="false"
+          />
           <van-cell title="邮箱：gmt@geekymedic.cn" :border="false" />
         </van-cell-group>
       </van-collapse-item>
     </van-collapse>
     <div class="copyright">
       <div class="logo">
-        <img class="pic-logo" :src="$store.state.ossUrl+'/common/logo2.png'" alt="logo" />
+        <img
+          class="pic-logo"
+          :src="$store.state.ossUrl + '/common/logo2.png'"
+          alt="logo"
+        />
       </div>
       <div class="code">
-        <img class="footer-code" :src="$store.state.ossUrl+'/common/footer_code.png'" alt="logo" />
+        <img
+          class="footer-code"
+          :src="$store.state.ossUrl + '/common/footer_code.png'"
+          alt="logo"
+        />
       </div>
       <div class="info">
         <div class="about">关注我们</div>
         <div class="company">深圳市药极客科技有限公司</div>
         <div class="desc">扫码了解更多产品和合作信息</div>
         <div class="code">
-          <a href="http://www.beian.miit.gov.cn/" target="_blank">粤ICP备19038620号-1</a>
+          <a href="http://www.beian.miit.gov.cn/" target="_blank"
+            >粤ICP备19038620号-1</a
+          >
         </div>
         <div class="line">互联网药品信息服务资格证书 (粤)—经营性—2019—0135</div>
-        <div class="line">网上有害信息举报专区 不良信息举报电话：0755-26412925</div>
+        <div class="line">
+          网上有害信息举报专区 不良信息举报电话：0755-26412925
+        </div>
       </div>
       <div class="privacy-link-group">
         <router-link to="privacy">隐私条款</router-link>
@@ -48,6 +64,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Collapse, CollapseItem, Cell, CellGroup, Divider } from "vant";
+
 @Component({
   name: "LayoutFooter",
   components: {

@@ -2,13 +2,13 @@
   <div class="app-header van-hairline--bottom" style="max-width:750px">
     <img
       class="pic-logo"
-      :src="$store.state.ossUrl+'/common/logo2.png'"
+      :src="$store.state.ossUrl + '/common/logo2.png'"
       alt="logo"
       @click="menuClick('index')"
     />
     <van-icon
       class="float-right"
-      :name="menuShow?'cross':'wap-nav'"
+      :name="menuShow ? 'cross' : 'wap-nav'"
       color="#199AEE"
       size="0.16rem"
       @click="showMenu"
@@ -52,7 +52,14 @@
         ></van-collapse-item>
       </van-collapse>
       <div class="btns">
-        <van-button class="btn-use" type="info" block round @click="menuClick('apply')">免费使用</van-button>
+        <van-button
+          class="btn-use"
+          type="info"
+          block
+          round
+          @click="menuClick('apply')"
+          >免费使用</van-button
+        >
         <!-- <van-button class="btn-download" type="info" block plain round>下载</van-button> -->
       </div>
     </van-popup>
@@ -70,6 +77,7 @@ import {
   Cell,
   CellGroup
 } from "vant";
+
 @Component({
   name: "LayoutHeader",
   components: {
@@ -90,7 +98,7 @@ export default class extends Vue {
   }
   menuClick(evt: string) {
     if (evt !== this.$router.currentRoute.name) {
-      this.$router.push(evt);
+      this.$router.push(`/${evt}`);
     }
     this.menuShow = false;
   }
